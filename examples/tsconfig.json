@@ -1,0 +1,13 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": ["env.d.ts", "../**/*", "../**/*.vue"],
+  "exclude": ["../**/__tests__/*"],
+  "compilerOptions": {
+    "composite": true,
+    "baseUrl": ".",
+    "paths": {
+      "vue3-drag-split-layout": [ "../library" ],
+      "@/*": ["./*"]
+    }
+  }
+}
