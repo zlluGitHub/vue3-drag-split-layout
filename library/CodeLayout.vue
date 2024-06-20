@@ -2,6 +2,7 @@
   <CodeLayoutBase 
     ref="codeLayoutBase"
     :config="layoutConfig"
+    @draggerDragSplit="(a, b) => emit('draggerDragSplit', a, b)"
   >
     <template #titleBarIcon>
       <slot name="titleBarIcon" />
@@ -111,6 +112,7 @@ const codeLayoutBase = ref<CodeLayoutBaseInstance>();
 const emit = defineEmits([	
   'canLoadLayout',
   'canSaveLayout',
+  'draggerDragSplit'
 ]);
 const props = defineProps({
   /**

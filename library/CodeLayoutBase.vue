@@ -16,31 +16,24 @@
     <!--root-->
     <div class="code-layout-activity">
       <!--activity bar-->
-      <div 
-        v-show="config.activityBar && config.primarySideBarPosition === 'left' && config.activityBarPosition === 'side'" 
-        :class="['code-layout-activity-bar',config.primarySideBarPosition]"
-      >
+      <div
+        v-show="config.activityBar && config.primarySideBarPosition === 'left' && config.activityBarPosition === 'side'"
+        :class="['code-layout-activity-bar', config.primarySideBarPosition]">
         <slot name="activityBar" />
       </div>
 
       <!-- base area -->
-      <SplitLayout 
-        ref="splitLayoutRef"
-        rootGridType="rootGrid"
-        :showTabHeader="false"
-        @canLoadLayout="loadLayout"
-        @canSaveLayout="saveGridLayoutDataToConfig"
-      >
+      <SplitLayout ref="splitLayoutRef" rootGridType="rootGrid" :showTabHeader="false" @canLoadLayout="loadLayout"
+        @canSaveLayout="saveGridLayoutDataToConfig" @draggerDragSplit="(a, b) => emit('draggerDragSplit', a, b)">
         <template #gridRender="{ grid }">
           <slot :name="grid.name" />
         </template>
       </SplitLayout>
-      
+
       <!--activity bar (right)-->
-      <div 
-        v-show="config.activityBar && config.primarySideBarPosition === 'right' && config.activityBarPosition === 'side'" 
-        :class="['code-layout-activity-bar',config.primarySideBarPosition]"
-      >
+      <div
+        v-show="config.activityBar && config.primarySideBarPosition === 'right' && config.activityBarPosition === 'side'"
+        :class="['code-layout-activity-bar', config.primarySideBarPosition]">
         <slot name="activityBar" />
       </div>
     </div>
@@ -52,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type PropType, watch } from 'vue';
+import { ref, type PropType, watch, defineEmits } from 'vue';
 import type { CodeLayoutConfig } from './CodeLayout';
 import type { CodeLayoutSplitNGridInternal, CodeLayoutSplitNInstance } from './SplitLayout/SplitN';
 import SplitLayout from './SplitLayout/SplitLayout.vue';
@@ -61,6 +54,8 @@ export interface CodeLayoutBaseInstance {
   getRef: () => HTMLElement | undefined;
   saveGridLayoutDataToConfig: () => void;
 }
+
+const emit = defineEmits(['draggerDragSplit']);
 
 const splitLayoutRef = ref<CodeLayoutSplitNInstance>();
 const container = ref<HTMLElement>();
@@ -109,7 +104,7 @@ function loadLayout() {
         canMinClose: true,
       });
       return currentBottom.value;
-    }    
+    }
     const buildCenter = (parent: CodeLayoutSplitNGridInternal) => {
       return parent.addGrid({
         name: 'centerArea',
@@ -117,7 +112,7 @@ function loadLayout() {
         size: 0,
         minSize: 0,
       });
-    }   
+    }
     const buildGroup = (parent: CodeLayoutSplitNGridInternal, name: string, direction?: "vertical" | "horizontal") => {
       const grid = parent.addGrid({
         name,
@@ -127,7 +122,7 @@ function loadLayout() {
       }, direction);
       grid.notifyRelayout();
       return grid;
-    }    
+    }
 
     splitLayoutRef.value.clearLayout();
     rootGrid.direction = 'horizontal';
@@ -190,7 +185,7 @@ function loadLayout() {
         break;
       }
     }
-      
+
     rootGrid.notifyRelayout();
   }
 }

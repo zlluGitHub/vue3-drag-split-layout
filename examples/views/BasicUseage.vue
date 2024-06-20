@@ -1,26 +1,14 @@
 <template>
   <div class="full-container">
-    <CodeLayout 
-      ref="codeLayout"
-      :layout-config="config"
-      :main-menu-config="menuData"
-    >
+    <CodeLayout ref="codeLayout" :layout-config="config" :main-menu-config="menuData"
+      @draggerDragSplit="handleDraggerDragSplit">
       <template #centerArea>
         <slot name="center">
-          <SplitLayout
-            ref="splitLayout"
-            @panelClose="onPanelClose"
-            @canLoadLayout="loadInnerLayout"
-          >
+          <SplitLayout ref="splitLayout" @panelClose="onPanelClose" @canLoadLayout="loadInnerLayout">
             <template #tabContentRender="{ panel }">
-              <vue-monaco-editor
-                v-if="panel.name.startsWith('file')"
-                v-model:value="panel.data.value"
-                :language="panel.data.language"
-                :path="panel.data.path"
-                theme="vs-dark"
-                :options="MONACO_EDITOR_OPTIONS"
-              />
+              <vue-monaco-editor v-if="panel.name.startsWith('file')" v-model:value="panel.data.value"
+                :language="panel.data.language" :path="panel.data.path" theme="vs-dark"
+                :options="MONACO_EDITOR_OPTIONS" />
             </template>
             <template #tabEmptyContentRender="{ grid }">
               <h2 :style="{ margin: 0 }">Empty Grid</h2>
@@ -69,9 +57,9 @@ import IconMarkdown from '../assets/icons/IconMarkdown.vue';
 import IconVue from '../assets/icons/IconVue.vue';
 import { ref, reactive, onMounted, nextTick, h, onBeforeUnmount, toRaw } from 'vue';
 import type { MenuOptions } from '@imengyu/vue3-context-menu';
-import { 
-  CodeLayout, CodeLayoutScrollbar, SplitLayout, type CodeLayoutSplitNInstance, 
-  type CodeLayoutConfig, type CodeLayoutInstance, type CodeLayoutPanelInternal 
+import {
+  CodeLayout, CodeLayoutScrollbar, SplitLayout, type CodeLayoutSplitNInstance,
+  type CodeLayoutConfig, type CodeLayoutInstance, type CodeLayoutPanelInternal
 } from 'vue3-drag-split-layout';
 import TestContent1 from '../assets/text/Useage.vue?raw';
 //import TestContent1 from '../assets/text/Useage2.vue?raw';
@@ -91,8 +79,8 @@ const MONACO_EDITOR_OPTIONS = {
   automaticLayout: true,
   formatOnType: true,
   formatOnPaste: true,
-}; 
-const defaultCodeLayoutConfig : CodeLayoutConfig = {
+};
+const defaultCodeLayoutConfig: CodeLayoutConfig = {
   primarySideBarSwitchWithActivityBar: true,
   primarySideBarPosition: 'left',
   primarySideBarWidth: 20,
@@ -130,7 +118,12 @@ const config = reactive<CodeLayoutConfig>({
   },
 });
 
-const menuData : MenuOptions = {
+const handleDraggerDragSplit = (a, b) => {
+  console.log(a, b);
+
+}
+
+const menuData: MenuOptions = {
   x: 0,
   y: 0,
   items: [
@@ -139,7 +132,7 @@ const menuData : MenuOptions = {
       children: [
         { label: "New" },
         { label: "Open" },
-        { 
+        {
           label: "Open recent",
           children: [
             { label: "File 1...." },
@@ -249,32 +242,32 @@ function loadLayout() {
             panel.title = 'vue3-drag-split-layout';
             panel.tooltip = 'vue3-drag-split-layout';
             panel.actions = [
-              { 
+              {
                 name: 'test',
                 icon: () => h(IconSearch),
-                onClick() {},
+                onClick() { },
               },
-              { 
+              {
                 name: 'test2',
                 icon: () => h(IconFile),
-                onClick() {},
+                onClick() { },
               },
             ]
             panel.iconSmall = () => h(IconSearch);
-            break; 
+            break;
           case 'explorer.outline':
             panel.title = 'OUTLINE';
             panel.tooltip = 'Outline';
             panel.actions = [
-              { 
+              {
                 name: 'test',
                 icon: () => h(IconSearch),
-                onClick() {},
+                onClick() { },
               },
-              { 
+              {
                 name: 'test2',
                 icon: () => h(IconFile),
-                onClick() {},
+                onClick() { },
               },
             ]
             panel.iconSmall = () => h(IconSearch);
@@ -283,21 +276,21 @@ function loadLayout() {
             panel.title = 'PORTS';
             panel.tooltip = 'Ports';
             panel.iconSmall = () => h(IconSearch);
-            break;  
+            break;
           case 'bottom.terminal':
             panel.title = 'TERMINAL';
             panel.tooltip = 'Terminal';
             panel.iconSmall = () => h(IconSearch);
             panel.actions = [
-              { 
+              {
                 name: 'test',
                 icon: () => h(IconSearch),
-                onClick() {},
+                onClick() { },
               },
-              { 
+              {
                 name: 'test2',
                 icon: () => h(IconFile),
-                onClick() {},
+                onClick() { },
               },
             ]
             break;
@@ -332,15 +325,15 @@ function loadLayout() {
         startOpen: true,
         iconSmall: () => h(IconSearch),
         actions: [
-          { 
+          {
             name: 'test',
             icon: () => h(IconSearch),
-            onClick() {},
+            onClick() { },
           },
-          { 
+          {
             name: 'test2',
             icon: () => h(IconFile),
-            onClick() {},
+            onClick() { },
           },
         ]
       });
@@ -350,15 +343,15 @@ function loadLayout() {
         name: 'explorer.outline',
         iconSmall: () => h(IconSearch),
         actions: [
-          { 
+          {
             name: 'test',
             icon: () => h(IconSearch),
-            onClick() {},
+            onClick() { },
           },
-          { 
+          {
             name: 'test2',
             icon: () => h(IconFile),
-            onClick() {},
+            onClick() { },
           },
         ]
       });
@@ -369,22 +362,22 @@ function loadLayout() {
         name: 'bottom.ports',
         startOpen: true,
         iconSmall: () => h(IconSearch),
-        accept: [ 'bottomPanel' ],
+        accept: ['bottomPanel'],
       });
       bottomGroup.addPanel({
         title: 'TERMINAL',
         tooltip: 'Terminal',
         name: 'bottom.terminal',
         actions: [
-          { 
+          {
             name: 'test',
             icon: () => h(IconSearch),
-            onClick() {},
+            onClick() { },
           },
-          { 
+          {
             name: 'test2',
             icon: () => h(IconFile),
-            onClick() {},
+            onClick() { },
           },
         ]
       });
