@@ -42,6 +42,10 @@ const emit = defineEmits([
   // 'text-setInterval',
 ]);
 const props = defineProps({
+  dragIsSelfGrid: {
+    type: Boolean,
+    default: false,
+  },
   /**
    * Specify the type of the root grid, usually used to set different types in multiple components to restrict mutual dragging
    */
@@ -69,6 +73,8 @@ const props = defineProps({
   }
 })
 
+
+provide('dragIsSelfGrid', props.dragIsSelfGrid);
 // console.log(props.draggerDragSplit);
 
 const onSpDraggerDrag = (a: any, b: any) => {

@@ -1,40 +1,20 @@
 <template>
-  <div 
-    :class="[ 
-      'code-layout-split-tab',
-      context.currentActiveGrid.value === grid ? 'active' : '',
-    ]"
-    @click="context.activeGrid(grid)"
-  >
+  <div :class="[
+    'code-layout-split-tab',
+    context.currentActiveGrid.value === grid ? 'active' : '',
+  ]" @click="context.activeGrid(grid)">
     <!--tab list-->
-    <div
-      v-if="grid.children.length > 0" 
-      ref="tabScroll" 
-      :class="[
-        'code-layout-split-tab-list',
-        tabHeaderDragOverDetector.dragEnterState.value ? 'drag-active' : '',
-      ]"
-      @dragover="tabHeaderDragOverDetector.handleDragOver"
-      @dragleave="tabHeaderDragOverDetector.handleDragLeave"
-      @dragenter="tabHeaderDragOverDetector.handleDragEnter"
-      @drop="handleTabHeaderDrop"
-    >
+    <div v-if="grid.children.length > 0" ref="tabScroll" :class="[
+      'code-layout-split-tab-list',
+      tabHeaderDragOverDetector.dragEnterState.value ? 'drag-active' : '',
+    ]" @dragover="tabHeaderDragOverDetector.handleDragOver" @dragleave="tabHeaderDragOverDetector.handleDragLeave"
+      @dragenter="tabHeaderDragOverDetector.handleDragEnter" @drop="handleTabHeaderDrop">
       <slot name="tabHeaderRender">
         <div class="tabs">
-          <slot
-            v-for="(panel, index) in grid.children"
-            :key="panel.name"
-            :panel="panel" 
-            :index="index"
-            :active="panel === grid.activePanel"
-            name="tabItemRender" 
-          >
-            <SplitTabItem 
-              :panel="panel"
-              :active="panel === grid.activePanel"
-              @click="onTabClick(panel)"
-              @contextmenu="emit('tabItemContextMenu', panel, $event)"
-            />
+          <slot v-for="(panel, index) in grid.children" :key="panel.name" :panel="panel" :index="index"
+            :active="panel === grid.activePanel" name="tabItemRender">
+            <SplitTabItem :grid="grid" :panel="panel" :active="panel === grid.activePanel" @click="onTabClick(panel)"
+              @contextmenu="emit('tabItemContextMenu', panel, $event)" />
           </slot>
         </div>
       </slot>
@@ -44,20 +24,15 @@
       </div>
     </div>
     <!--tab content -->
-    <div 
-      ref="tabContent"
-      :class="[
-        'code-layout-split-tab-content',
-        grid.children.length > 0 ? '' : 'empty',
-        tabContentDragOverDetector.dragPanelState.value ? 'dragging' : '',
-        tabContentDragOverDetector.dragEnterState.value ? 'drag-active' : '',
-        `drag-over-${tabContentDragOverDetector.dragOverState.value}`,
-      ]"
-      @dragover="tabContentDragOverDetector.handleDragOver"
-      @dragleave="tabContentDragOverDetector.handleDragLeave"
-      @dragenter="tabContentDragOverDetector.handleDragEnter"
-      @drop="handleTabContentDrop"
-    >
+    <div ref="tabContent" :class="[
+      'code-layout-split-tab-content',
+      grid.children.length > 0 ? '' : 'empty',
+      tabContentDragOverDetector.dragPanelState.value ? 'dragging' : '',
+      tabContentDragOverDetector.dragEnterState.value ? 'drag-active' : '',
+      `drag-over-${tabContentDragOverDetector.dragOverState.value}`
+    ]" :grid="grid.name" @dragover="tabContentDragOverDetector.handleDragOver"
+      @dragleave="tabContentDragOverDetector.handleDragLeave" @dragenter="tabContentDragOverDetector.handleDragEnter"
+      @drop="handleTabContentDrop">
       <slot v-if="grid.activePanel" name="tabContentRender" :panel="grid.activePanel" />
       <slot v-else name="tabEmptyContentRender" :grid="grid" />
     </div>
@@ -97,7 +72,7 @@ function onTabClick(panel: CodeLayoutSplitNPanelInternal) {
 
 const tabHeaderDragOverDetector = usePanelDragOverDetector(
   tabScroll, grid, horizontal,
-  () => {}, 
+  () => { },
   (dragPanel) => {
     return (
       (!dragPanel.accept || dragPanel.accept.includes(props.grid.parentGrid))
@@ -118,7 +93,7 @@ function handleTabHeaderDrop(e: DragEvent) {
 
 const tabContentDragOverDetector = usePanelDragOverDetector(
   tabContent, grid, 'four',
-  () => {}, 
+  () => { },
   (dragPanel) => {
     return (
       (!dragPanel.accept || dragPanel.accept.includes(props.grid.parentGrid))
@@ -134,8 +109,8 @@ function handleTabContentDrop(e: DragEvent) {
     e.preventDefault();
     e.stopPropagation();
     context.dragDropToPanel(
-      grid.value, 
-      tabContentDragOverDetector.dragOverState.value, 
+      grid.value,
+      tabContentDragOverDetector.dragOverState.value,
       dropPanel
     );
   }

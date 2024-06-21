@@ -1,7 +1,7 @@
 <template>
   <div class="full-container demo">
     <SplitLayout ref="splitLayoutRef" @panelClose="onPanelClose" @panelDrop="onPanelDrop" @canLoadLayout="loadLayout"
-      @canSaveLayout="saveLayout" @draggerDragSplit="draggerDragSplit">
+      @canSaveLayout="saveLayout" @draggerDragSplit="draggerDragSplit" :dragIsSelfGrid="true">
       <template #tabContentRender="{ panel }">
         <span v-if="panel.name === 'datahelp'">
           Data load and Save Help:
@@ -75,7 +75,7 @@ const props = defineProps({
 })
 
 function draggerDragSplit(a: any, b: any) {
-  console.log(123444,a,b);
+  console.log(123444, a, b);
 }
 
 function getRandomIcon() {
@@ -95,6 +95,7 @@ function onPanelClose(panel: CodeLayoutPanelInternal, resolve: () => void) {
 function onAddPanel(grid: CodeLayoutSplitNGridInternal) {
   count++;
   grid.addPanel({
+    draggable: true,
     title: `Panel${count}`,
     tooltip: `Panel${count}`,
     name: `panel${count}`,
@@ -171,6 +172,7 @@ function loadLayout() {
       for (let i = 0; i < 4; i++) {
         count++;
         grid3.addPanel({
+          draggable: true,
           title: `Panel${count}`,
           tooltip: `Panel${count} tooltip`,
           name: `panel${count}`,
@@ -182,6 +184,7 @@ function loadLayout() {
 
       count++;
       grid2.addPanel({
+        draggable: true,
         title: `Panel with actions`,
         tooltip: `Panel${count} tooltip`,
         name: `panel${count}`,
@@ -204,6 +207,7 @@ function loadLayout() {
 
       if (props.enableSave) {
         grid4.addPanel({
+          draggable: true,
           title: `Data load and Save Help`,
           tooltip: `Help`,
           name: `datahelp`,
