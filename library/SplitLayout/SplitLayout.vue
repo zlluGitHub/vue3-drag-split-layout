@@ -271,6 +271,7 @@ function onTabActiveChild(
   old: CodeLayoutPanelInternal,
   panel: CodeLayoutPanelInternal
 ) {
+  emit("onPanelClick", old, panel);
   if (panel === context.currentActiveGrid.value) {
     emit("panelActive", lastActivePanel.value, panel.activePanel);
     lastActivePanel.value = panel.activePanel;

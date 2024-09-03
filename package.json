@@ -1,6 +1,6 @@
 {
   "name": "vue3-drag-split-layout",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A split layout for Vue",
   "main": "lib/vue3-drag-split-layout.umd.js",
   "files": [

@@ -8,6 +8,7 @@
       @canSaveLayout="saveLayout"
       @draggerDragSplit="draggerDragSplit"
       @panelActive="panelActive"
+      @onPanelClick="onPanelClick"
       :dragIsSelfGrid="true"
     >
       <template #tabContentRender="{ panel }">
@@ -119,6 +120,9 @@ function onAddPanel(grid: CodeLayoutSplitNGridInternal) {
 }
 function onPanelDrop() {
   getDebugGridTreeText();
+}
+function onPanelClick(a,b) {
+ console.log(a,b);
 }
 
 function getDebugGridTreeText() {
